@@ -2,10 +2,12 @@ package main
 
 import "encoding/json"
 import "io/ioutil"
+import "flag"
 import "fmt"
 import "os"
-import "time"
 import "sort"
+import "strings"
+import "time"
 
 // *** Last.Fm Classes ***
 type Play struct {
@@ -54,8 +56,12 @@ func (s TrackInfoList) Swap(i, j int) {
 }
 
 func main() {
+	// Set up flag variables and parse the command-line flags.
+	path := flag.String("path", "./", "The path that contains the JSON files.")
+	flag.Parse()
+
 	// Build a list of plays for all JSON data in the History folder.
-	plays := getAllPlaysForFolder("./History")
+	plays := getAllPlaysForFolder(*path)
 
 	// Create a track info list with details about each track in the play history.
 	tracks := make(TrackInfoList, 0)
@@ -85,8 +91,14 @@ func getAllPlaysForFolder(folderName string) []Play {
 
 	files, _ := ioutil.ReadDir(folderName)
 	for _, f := range files {
+		// Get full file path and only process it if it's a JSON file.
+		filePath := folderName + "/" + f.Name()
+		if !strings.HasSuffix(filePath, ".json") {
+			continue
+		}
+
 		// Read in JSON data.
-		jsonData, e := ioutil.ReadFile(folderName + "/" + f.Name())
+		jsonData, e := ioutil.ReadFile(filePath)
 		if e != nil {
 			fmt.Printf("File error: %v\n", e)
 			os.Exit(1)
