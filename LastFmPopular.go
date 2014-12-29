@@ -16,7 +16,6 @@ type Play struct {
 }
 
 type Timestamp struct {
-	//Iso time.Time
 	UnixTimestamp int64
 }
 
