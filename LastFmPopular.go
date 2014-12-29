@@ -1,13 +1,15 @@
 package main
 
-import "encoding/json"
-import "io/ioutil"
-import "flag"
-import "fmt"
-import "os"
-import "sort"
-import "strings"
-import "time"
+import (
+	"encoding/json"
+	"flag"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"sort"
+	"strings"
+	"time"
+)
 
 // *** Last.Fm Classes ***
 type Play struct {
